@@ -9,7 +9,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.authentication import TokenAuthentication
 
 from .serializers import RegisterSerializer, UserSerializer, LoginSerializer, ProfileSerializer, PasswordChangeSerializer
-from .permissions import IsAdmin
+from .permissions import IsAdmin, IsManager, IsStaff
 
 
 class RegisterView(APIView):
@@ -100,3 +100,28 @@ class AdminPanelView(APIView):
     def get(self, request: Request) -> Response:
         
         return Response('xush kelibiz adminjon')
+    
+
+class ManagmentView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsManager or IsAdmin]
+
+    def get(self, request: Request ) ->Response:
+
+        return Response("xush kelibsiz Managment")
+    
+
+class StaffView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsStaff]
+
+    def get(self, request:Request) -> Response:
+
+        return Response("Siz jamoaga xush kelibsiz")
+
+
+class Public(APIView):
+
+    def get(self,request:Request) ->Response:
+
+        return Response("Welcome to PUblic")
